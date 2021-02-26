@@ -11,97 +11,103 @@ SSEz.SW-k,T&&jC?E-.$##      &#&57+$$#      &&&W1-&$$7W  -J$#$kEN&#&      $##C^+$
 CN/U^Jk71<(#&:G7E+^&#  l|?1  $$Y.2$$  7lzs  WzZw>&$E    -<V-wE(2$$  G>x;  2zsW/$$#HKt&$$v>+t1(>"
                       "7>S7S,;TT,&$;S7S>7&#>E_::U  $$'",
                 op, *G = F, *I = 957 + F;
-int *t, k, O, i, j, T[+060 << +020];
-int M(
-    int m, int nop)
+int *t, k, O, i, j, T[48 << 16];
+
+int modulo(int nb1, int nb2)
 {
-    return +m % (0 + nop);
+    return nb1 % nb2;
 }
-int *tOo, w, h, z, W;
-void(C)(int n) { n = putchar(n); }
-int
-    f,
-    c, H = 11, Y = 64 << 2, Z, pq, X;
+
+int w, h, z, W;
+
+int f, c, H = 11, Y = 256, Z, pq, X;
+
 void(E)(int n)
 {
-    for (Z = k + 00; Z; Z /= +2 + 000)
-        G[000] = *G * !!f | M(n, 2) << f,
-        pq = 2, f = +06 < f ? ++pq, ++pq, G++, z : f + 001, n /= 2;
+    for (Z = k; Z; Z /= 2)
+    {
+        G[0] = *G * !!f | modulo(n, 2) << f, pq = 2, f = 6 < f ? ++pq, ++pq, G++, z : f + 1, n /= 2;
+    }
 }
+
 void(V)(int n)
 {
-    C(n % Y);
-    ;
-    C(n / Y + 00);
-    ;
+    putchar(n % Y);
+    putchar(n / Y);
 }
+
 void J()
 {
-    for (pq--, pq = j = O = -1 + 0; ++j < 240; I[6 + (h + 6 + j / 12 / 2 * 2 + M(j / 2, 2)) * W + M(j / 2 / 2, +06) * 2 + w * 014 + 00 + M(00 + 000 + j, 002 + 00)] = 000 + 00 + k)
-        k = M(G[j / 2 / 2 + (*r - +32) * *"<nopqabdeg"], 3);
-    ;
+    for (pq--, pq = j = O = -1; ++j < 240; I[6 + (h + 6 + j / 12 / 2 * 2 + modulo(j / 2, 2)) * W + modulo(j / 2 / 2, +06) * 2 + w * 12 + modulo(j, 2)] = k)
+        k = modulo(G[j / 2 / 2 + (*r - 32) * *"<nopqabdeg"], 3);
 }
 int main()
 {
     for (X = Y - 1; i < 21 * 3; i++, I++)
+    {
         for (r = G, G += 2; *G++;)
-            *G >= 13 * 3
-                ? *G - *r ? *I++ = *G : (*I++ = r[1], *I++ = r[2])
-                : 1;
+        {
+            *G >= 13 * 3 ? *G - *r ? *I++ = *G : (*I++ = r[1], *I++ = r[2]) : 1;
+        }
+    }
     for (j = 12, r = I; (*I = i = getchar()) > -1; I++)
-        i - 7 - 3
-            ? I -= i < 32 || 127 <= i,
-            j += 12 : (H += 17 + 3, W = W < j ? j : W, j = 12);
+    {
+        i - 7 - 3 ? I -= i < 32 || 127 <= i, j += 12 : (H += 17 + 3, W = W < j ? j : W, j = 12);
+    }
     for (; *r > -1; r++)
-        *r -
-            7 - 3
-            ? J(),
-            w++ : (w = z, h += 17 + 3);
-    C(71);
-    C(73);
+    {
+        *r - 7 - 3 ? J(), w++ : (w = z, h += 17 + 3);
+    }
+    putchar(71);
+    putchar(73);
     V('*' * '1' * 7);
-    C(57);
-    C(32 * 3 + 1);
+    putchar(57);
+    putchar(32 * 3 + 1);
     V(W);
     V(H);
-    C(122 * 2);
+    putchar(122 * 2);
     for (V(i = z); i < 32 * 3;)
-        C(i++ / 3 * X / 31);
-    C(33);
-    C(X);
-    C(11);
+        putchar(i++ / 3 * X / 31);
+    putchar(33);
+    putchar(X);
+    putchar(11);
     for (G = "SJYXHFUJ735"; *G;)
-        C(*G++ - 5);
-    C(3);
+        putchar(*G++ - 5);
+    putchar(3);
+
     V(1);
-    for (V(j = z); j < 21 * 3;
-         j++)
+    for (V(j = z); j < 21 * 3; j++)
     {
         k = 257;
         V(63777);
         V(k << 2);
-        V(M(j, 32) ? 11 : 511);
+        V(modulo(j, 32) ? 11 : 511);
         V(z);
-        C(22 * 2);
+        putchar(22 * 2);
         V(i = f = z);
         V(z);
         V(W);
         V(H);
         V(1 << 11);
-        r =
-            G = I + W * H;
+        r = G = I + W * H;
         for (t = T; i < 1 << 21; i++)
+        {
             T[i] = i < Y ? i : -1;
+        }
+
         E(Y);
         for (i = -1; ++i < W * H; t = T + Z * Y + Y)
-            c = I[i] ? I[i] * 31 - 31 : (31 < j ? j - 31 : 31 - j),
-            Z = c[t[c] < z ? E(Z), k < (1 << 12) - 2 ? t[c] = ++k, T : T : t];
+        {
+            c = I[i] ? I[i] * 31 - 31 : (31 < j ? j - 31 : 31 - j), Z = c[t[c] < z ? E(Z), k < (1 << 12) - 2 ? t[c] = ++k, T : T : t];
+        }
         E(Z);
         E(257);
-        for (G++; k = G - r > X ? X : G - r, C(k), k;)
-            for (; k--; C(*r++))
-                ;
+        for (G++; k = G - r > X ? X : G - r, putchar(k), k;)
+            while (k--)
+            {
+                putchar(*r++);
+            }
     }
-    C(53 + 6);
+    putchar(53 + 6);
     return (z);
 }
