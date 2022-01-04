@@ -13,6 +13,13 @@ CN/U^Jk71<(#&:G7E+^&#  l|?1  $$Y.2$$  7lzs  WzZw>&$E    -<V-wE(2$$  G>x;  2zsW/$
                 op, *G = F, *I = 957 + F;
 int *t, k, O, i, j, T[48 << 16];
 
+// Custom function
+void putWord(char* word) {
+    while(*word) {
+        putchar(*word++);
+    }
+}
+
 int modulo(int nb1, int nb2)
 {
     return nb1 % nb2;
@@ -22,7 +29,7 @@ int w, h, z, W;
 
 int f, c, H = 11, Y = 256, Z, pq, X;
 
-void(E)(int n)
+void E (int n)
 {
     for (Z = k; Z; Z /= 2)
     {
@@ -30,7 +37,7 @@ void(E)(int n)
     }
 }
 
-void(V)(int n)
+void V (int n)
 {
     putchar(n % Y);
     putchar(n / Y);
@@ -58,12 +65,19 @@ int main()
     {
         *r - 7 - 3 ? J(), w++ : (w = z, h += 17 + 3);
     }
-    putchar(71);
-    putchar(73);
-    V('*' * '1' * 7);
-    putchar(57);
-    putchar(32 * 3 + 1);
+
+    //logical screen descriptor
+    putchar('G');
+    putchar('I');
+    putchar('F');
+    putchar('8');
+    putchar('9');
+    putchar('a');
+    
+    //width
     V(W);
+
+    //height
     V(H);
     putchar(122 * 2);
     for (V(i = z); i < 32 * 3;)
@@ -71,9 +85,8 @@ int main()
     putchar(33);
     putchar(X);
     putchar(11);
-    for (G = "SJYXHFUJ735"; *G;)
-        putchar(*G++ - 5);
-    putchar(3);
+    putWord("NETSCAPE2.0");
+    putchar(3); //End of text
 
     V(1);
     for (V(j = z); j < 21 * 3; j++)
