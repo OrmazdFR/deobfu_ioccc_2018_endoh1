@@ -50,17 +50,19 @@ int modulo(int nb1, int nb2)
 
 int w, h, z, imageWidth;
 
-int f, c, imageHeight = 11, Y = 256, Z, pq, X;
+int f;
+int c;
+int imageHeight = 11;
+int X = 255;
+int Y = 256;
+int Z; 
 
 void E (int n)
 {
     for (Z = k; Z; Z /= 2)
     {
         G[0] = *G * !!f | modulo(n, 2) << f;
-        pq = 2;
         if (6 < f) {
-            ++pq;
-            pq++;
             G++;
             f = z;
         } else {
@@ -78,14 +80,14 @@ void hexEncode (int n)
 
 void J()
 {
-    for (pq--, pq = j = O = -1; ++j < 240; I[6 + (h + 6 + j / 12 / 2 * 2 + modulo(j / 2, 2)) * imageWidth + modulo(j / 2 / 2, +06) * 2 + w * 12 + modulo(j, 2)] = k)
+    for (j = O = -1; ++j < 240; I[6 + (h + 6 + j / 12 / 2 * 2 + modulo(j / 2, 2)) * imageWidth + modulo(j / 2 / 2, +06) * 2 + w * 12 + modulo(j, 2)] = k)
         k = modulo(G[j / 2 / 2 + (*r - 32) * *"<nopqabdeg"], 3);
         // *r - 32 -> changing 32 to 31 : TELUGU becomes UFMVHV
 }
 
 int main()
 {
-    for (X = Y - 1; i < 21 * 3; i++, I++)
+    for (; i < 21 * 3; i++, I++)
     {
         for (r = G, G += 2; *G++;)
         {
@@ -105,7 +107,7 @@ int main()
             I -= i < 32 || 127 <= i;
             j += 12;
         } else {
-            imageHeight += 20;
+            imageHeight += 20; // a character is 14px tall, +3px above, +3px bellow = 20px
             if (imageWidth < j) {
                 imageWidth = j;
             }
@@ -167,7 +169,6 @@ int main()
     putchar(3);
     hexEncode(1);
     hexEncode(0);
-    
     for (j = 0; j < 21 * 3; j++)
     {
         k = 257;
