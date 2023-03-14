@@ -115,13 +115,13 @@ int main()
     }
 
     ////// https://www.w3.org/Graphics/GIF/spec-gif89a.txt
-    //// Header
+    //// 17. Header
     // Signature
     putWord("GIF");
     // Version
     putWord("89a");
     
-    //// Logical Screen Descriptor
+    //// 18. Logical Screen Descriptor
     // Logical Screen imageWidth
     hexEncode(imageWidth);
     // Logical Screen imageHeight
@@ -143,11 +143,19 @@ int main()
         putchar(i / 3 * X / 31); // Puts 0,0,0 8,8,8...255,255,255 which are RGB values. The first one (0,0,0) is also the color of the text
     }
 
+    //// 26. Application Extension
+    // Extension Introducer (0x21)
     putchar(33);
+    // Extension Label (0xFF)
     putchar(X);
+    // Block size (0x0B)
     putchar(11);
-    putWord("NETSCAPE2.0");
-    putchar(3); //End of text
+    // Application Identifier
+    putWord("NETSCAPE");
+    // Appl. Authentication Code
+    putWord("2.0");
+
+    putchar(3);
 
     hexEncode(1);
     for (hexEncode(j = z); j < 21 * 3; j++)
