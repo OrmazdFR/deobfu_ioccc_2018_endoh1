@@ -20,6 +20,20 @@ void putWord(char* word) {
     }
 }
 
+// Test function
+void saveIntToFile(int myvar)
+{   
+    FILE *file = fopen("testFile.txt", "a+");
+    if (file == NULL) {
+        printf("Failed to open file.\n");
+    }
+
+    fprintf(file, "%d\n", myvar);
+
+    fclose(file);
+}
+
+
 int modulo(int nb1, int nb2)
 {
     return nb1 % nb2;
