@@ -25,9 +25,9 @@ int modulo(int nb1, int nb2)
     return nb1 % nb2;
 }
 
-int w, h, z, W;
+int w, h, z, Width;
 
-int f, c, H = 11, Y = 256, Z, pq, X;
+int f, c, Height = 11, Y = 256, Z, pq, X;
 
 void E (int n)
 {
@@ -47,7 +47,7 @@ void E (int n)
     }
 }
 
-void V (int n)
+void hexEncode (int n)
 {
     putchar(n % Y);
     putchar(n / Y);
@@ -55,7 +55,7 @@ void V (int n)
 
 void J()
 {
-    for (pq--, pq = j = O = -1; ++j < 240; I[6 + (h + 6 + j / 12 / 2 * 2 + modulo(j / 2, 2)) * W + modulo(j / 2 / 2, +06) * 2 + w * 12 + modulo(j, 2)] = k)
+    for (pq--, pq = j = O = -1; ++j < 240; I[6 + (h + 6 + j / 12 / 2 * 2 + modulo(j / 2, 2)) * Width + modulo(j / 2 / 2, +06) * 2 + w * 12 + modulo(j, 2)] = k)
         k = modulo(G[j / 2 / 2 + (*r - 32) * *"<nopqabdeg"], 3);
 }
 int main()
@@ -80,9 +80,9 @@ int main()
             I -= i < 32 || 127 <= i;
             j += 12;
         } else {
-            H += 20;
-            if (W < j) {
-                W = j;
+            Height += 20;
+            if (Width < j) {
+                Width = j;
             }
             j = 12;
         }
@@ -98,43 +98,53 @@ int main()
         }
     }
 
-    //logical screen descriptor
-    putchar('G');
-    putchar('I');
-    putchar('F');
-    putchar('8');
-    putchar('9');
-    putchar('a');
+    ////// https://www.w3.org/Graphics/GIF/spec-gif89a.txt
+    //// Header
+    // Signature
+    putWord("GIF");
+    // Version
+    putWord("89a");
     
-    //width
-    V(W);
-
-    //height
-    V(H);
-    putchar(122 * 2);
-    for (V(i = z); i < 32 * 3;)
+    //// Logical Screen Descriptor
+    // Logical Screen Width
+    hexEncode(Width);
+    // Logical Screen Height
+    hexEncode(Height);
+    // Packed fields
+    /*  - 1   : A Global Color Table will immediately follow, the Background Color Index field is meaningful.
+        - 111 : All colours will be used
+        - 0   : Sort Flag - Global Color Table is not sorted
+        - 100 : Size of Global Color Table */
+    putchar(244); //11110100
+    //Background Color Index
+    hexEncode(0);
+    i = z;
+    while (i < 32 * 3)
+    {
         putchar(i++ / 3 * X / 31);
+    }
+
     putchar(33);
     putchar(X);
     putchar(11);
     putWord("NETSCAPE2.0");
     putchar(3); //End of text
 
-    V(1);
-    for (V(j = z); j < 21 * 3; j++)
+    hexEncode(1);
+    for (hexEncode(j = z); j < 21 * 3; j++)
     {
         k = 257;
-        V(63777);
-        V(k << 2);
-        V(modulo(j, 32) ? 11 : 511);
-        V(z);
+        hexEncode(63777);
+        hexEncode(k << 2);
+        hexEncode(modulo(j, 32) ? 11 : 511);
+        hexEncode(z);
         putchar(44);
-        V(i = f = z);
-        V(z);
-        V(W);
-        V(H);
-        V(1 << 11);
-        r = G = I + W * H;
+        hexEncode(i = f = z);
+        hexEncode(z);
+        hexEncode(Width);
+        hexEncode(Height);
+        hexEncode(1 << 11);
+        r = G = I + Width * Height;
         for (t = T; i < 1 << 21; i++)
         {
             if (i < Y) {
@@ -145,7 +155,7 @@ int main()
         }
 
         E(Y);
-        for (i = -1; ++i < W * H; t = T + Z * Y + Y)
+        for (i = -1; ++i < Width * Height; t = T + Z * Y + Y)
         {
             if (I[i]) {
                 c = I[i] * 31 - 31;
@@ -153,7 +163,7 @@ int main()
                 if (31 < j) {
                     c = j - 31;
                 } else {
-                    c = 31- j;
+                    c = 31 - j;
                 }
             } 
 
