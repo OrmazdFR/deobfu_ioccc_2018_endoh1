@@ -25,9 +25,9 @@ int modulo(int nb1, int nb2)
     return nb1 % nb2;
 }
 
-int w, h, z, Width;
+int w, h, z, imageWidth;
 
-int f, c, Height = 11, Y = 256, Z, pq, X;
+int f, c, imageHeight = 11, Y = 256, Z, pq, X;
 
 void E (int n)
 {
@@ -55,9 +55,11 @@ void hexEncode (int n)
 
 void J()
 {
-    for (pq--, pq = j = O = -1; ++j < 240; I[6 + (h + 6 + j / 12 / 2 * 2 + modulo(j / 2, 2)) * Width + modulo(j / 2 / 2, +06) * 2 + w * 12 + modulo(j, 2)] = k)
+    for (pq--, pq = j = O = -1; ++j < 240; I[6 + (h + 6 + j / 12 / 2 * 2 + modulo(j / 2, 2)) * imageWidth + modulo(j / 2 / 2, +06) * 2 + w * 12 + modulo(j, 2)] = k)
         k = modulo(G[j / 2 / 2 + (*r - 32) * *"<nopqabdeg"], 3);
+        // *r - 32 -> changing 32 to 31 : TELUGU becomes UFMVHV
 }
+
 int main()
 {
     for (X = Y - 1; i < 21 * 3; i++, I++)
@@ -80,9 +82,9 @@ int main()
             I -= i < 32 || 127 <= i;
             j += 12;
         } else {
-            Height += 20;
-            if (Width < j) {
-                Width = j;
+            imageHeight += 20;
+            if (imageWidth < j) {
+                imageWidth = j;
             }
             j = 12;
         }
@@ -106,22 +108,25 @@ int main()
     putWord("89a");
     
     //// Logical Screen Descriptor
-    // Logical Screen Width
-    hexEncode(Width);
-    // Logical Screen Height
-    hexEncode(Height);
+    // Logical Screen imageWidth
+    hexEncode(imageWidth);
+    // Logical Screen imageHeight
+    hexEncode(imageHeight);
     // Packed fields
     /*  - 1   : A Global Color Table will immediately follow, the Background Color Index field is meaningful.
         - 111 : All colours will be used
         - 0   : Sort Flag - Global Color Table is not sorted
         - 100 : Size of Global Color Table */
     putchar(244); //11110100
-    //Background Color Index
-    hexEncode(0);
-    i = z;
-    while (i < 32 * 3)
+    // Background Color Index
+    putchar(0);
+    // Pixel Aspect Ratio
+    putchar(0);
+
+    // Global Color Table (there will be 32 colours)
+    for (i = 0; i < 32 * 3; i++)
     {
-        putchar(i++ / 3 * X / 31);
+        putchar(i / 3 * X / 31); // Puts 0,0,0 8,8,8...255,255,255 which are RGB values. The first one (0,0,0) is also the color of the text
     }
 
     putchar(33);
@@ -141,10 +146,10 @@ int main()
         putchar(44);
         hexEncode(i = f = z);
         hexEncode(z);
-        hexEncode(Width);
-        hexEncode(Height);
+        hexEncode(imageWidth);
+        hexEncode(imageHeight);
         hexEncode(1 << 11);
-        r = G = I + Width * Height;
+        r = G = I + imageWidth * imageHeight;
         for (t = T; i < 1 << 21; i++)
         {
             if (i < Y) {
@@ -155,7 +160,7 @@ int main()
         }
 
         E(Y);
-        for (i = -1; ++i < Width * Height; t = T + Z * Y + Y)
+        for (i = -1; ++i < imageWidth * imageHeight; t = T + Z * Y + Y)
         {
             if (I[i]) {
                 c = I[i] * 31 - 31;
