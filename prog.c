@@ -33,7 +33,17 @@ void E (int n)
 {
     for (Z = k; Z; Z /= 2)
     {
-        G[0] = *G * !!f | modulo(n, 2) << f, pq = 2, f = 6 < f ? ++pq, ++pq, G++, z : f + 1, n /= 2;
+        G[0] = *G * !!f | modulo(n, 2) << f;
+        pq = 2;
+        if (6 < f) {
+            ++pq;
+            pq++;
+            G++;
+            f = z;
+        } else {
+            f = f+1;
+        }
+        n /= 2;
     }
 }
 
@@ -54,16 +64,38 @@ int main()
     {
         for (r = G, G += 2; *G++;)
         {
-            *G >= 13 * 3 ? *G - *r ? *I++ = *G : (*I++ = r[1], *I++ = r[2]) : 1;
+            if (*G >= 13 * 3) {
+                if (*G - *r) {
+                    *I++ = *G;
+                } else {
+                    *I++ = r[1];
+                    *I++ = r[2];
+                }
+            }
         }
     }
     for (j = 12, r = I; (*I = i = getchar()) > -1; I++)
     {
-        i - 7 - 3 ? I -= i < 32 || 127 <= i, j += 12 : (H += 17 + 3, W = W < j ? j : W, j = 12);
+        if(i-10) {
+            I -= i < 32 || 127 <= i;
+            j += 12;
+        } else {
+            H += 20;
+            if (W < j) {
+                W = j;
+            }
+            j = 12;
+        }
     }
     for (; *r > -1; r++)
     {
-        *r - 7 - 3 ? J(), w++ : (w = z, h += 17 + 3);
+        if (*r - 10) {
+            J();
+            w++;
+        } else {
+            w = z;
+            h += 20;
+        }
     }
 
     //logical screen descriptor
@@ -96,7 +128,7 @@ int main()
         V(k << 2);
         V(modulo(j, 32) ? 11 : 511);
         V(z);
-        putchar(22 * 2);
+        putchar(44);
         V(i = f = z);
         V(z);
         V(W);
@@ -105,21 +137,48 @@ int main()
         r = G = I + W * H;
         for (t = T; i < 1 << 21; i++)
         {
-            T[i] = i < Y ? i : -1;
+            if (i < Y) {
+                T[i] = i;
+            } else {
+                T[i] = -1;
+            }
         }
 
         E(Y);
         for (i = -1; ++i < W * H; t = T + Z * Y + Y)
         {
-            c = I[i] ? I[i] * 31 - 31 : (31 < j ? j - 31 : 31 - j), Z = c[t[c] < z ? E(Z), k < (1 << 12) - 2 ? t[c] = ++k, T : T : t];
+            if (I[i]) {
+                c = I[i] * 31 - 31;
+            } else {
+                if (31 < j) {
+                    c = j - 31;
+                } else {
+                    c = 31- j;
+                }
+            } 
+
+            if (t[c] < z) {
+                E(Z);
+                if (k < (1 << 12) - 2) {
+                    t[c] = ++k;
+                    Z = c[T];
+                } else {
+                    Z = c[T];
+                }
+            } else {
+                Z = c[t];
+            }
         }
         E(Z);
         E(257);
-        for (G++; k = G - r > X ? X : G - r, putchar(k), k;)
-            while (k--)
+        for (G++; k = G - r > X ? X : G - r, putchar(k);)
+        {
+            while (k > 0)
             {
                 putchar(*r++);
+                k--;
             }
+        }
     }
     putchar(53 + 6);
     return (z);
