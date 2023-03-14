@@ -16,7 +16,6 @@ char *G = F;
 char *I = 957 + F;
 int *t;
 int k;
-int O;
 int i;
 int j;
 // T has a size of 3Mio
@@ -48,14 +47,17 @@ int modulo(int nb1, int nb2)
     return nb1 % nb2;
 }
 
-int w, h, z, imageWidth;
+int w;
+int h;
 
 int f;
 int c;
+int imageWidth;
 int imageHeight = 11;
 int X = 255;
 int Y = 256;
 int Z; 
+int z = 0;
 
 void E (int n)
 {
@@ -80,14 +82,17 @@ void hexEncode (int n)
 
 void J()
 {
-    for (j = O = -1; ++j < 240; I[6 + (h + 6 + j / 12 / 2 * 2 + modulo(j / 2, 2)) * imageWidth + modulo(j / 2 / 2, +06) * 2 + w * 12 + modulo(j, 2)] = k)
+    for (j = 0; j < 240; j++)
+    {
         k = modulo(G[j / 2 / 2 + (*r - 32) * *"<nopqabdeg"], 3);
         // *r - 32 -> changing 32 to 31 : TELUGU becomes UFMVHV
+        I[6 + (h + 6 + j / 12 / 2 * 2 + modulo(j / 2, 2)) * imageWidth + modulo(j / 2 / 2, +06) * 2 + w * 12 + modulo(j, 2)] = k;
+    }
 }
 
 int main()
 {
-    for (; i < 21 * 3; i++, I++)
+    for (i = 0; i < 21 * 3; i++, I++)
     {
         for (r = G, G += 2; *G++;)
         {
