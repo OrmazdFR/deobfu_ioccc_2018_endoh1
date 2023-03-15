@@ -30,7 +30,7 @@ void putWord(char* word) {
 
 // Test function
 void saveIntToFile(int myvar)
-{   
+{
     FILE *file = fopen("testFile.txt", "a+");
     if (file == NULL) {
         printf("Failed to open file.\n");
@@ -66,7 +66,7 @@ int imageWidth;
 int imageHeight = 11;
 int X = 255;
 int Y = 256;
-int Z; 
+int Z;
 int z = 0;
 
 void E (int n)
@@ -93,7 +93,7 @@ void hexEncode (int n)
 void generateCharactersPixels()
 {
     // Each character is displayed in a 12*16 grid = 192px. 4 "pixels" make a full pixel (UL -> UR -> BL -> BR)
-    // There are 24 empty pixels (12*2) at the top, and 4 empty pixels (2*2) at the bottom right 
+    // There are 24 empty pixels (12*2) at the top, and 4 empty pixels (2*2) at the bottom right
     for (j = 0; j < 192; j++)
     {
         char characterSymbol = *r - 32;
@@ -102,7 +102,6 @@ void generateCharactersPixels()
         k = modulo(G[j / 4 + (characterSymbol * 60)], 3);
         // *r - 32 -> changing 32 to 31 : TELUGU becomes UFMVHV
         I[6 + (h + 6 + j / 24 * 2 + modulo(j / 2, 2)) * imageWidth + modulo(j / 4, 6) * 2 + w * 12 + modulo(j, 2)] = k;
-        
     }
 }
 
@@ -143,7 +142,7 @@ int main()
     }
 
     defineImageDimensions();
-    
+
     while (*r != -1)
     {
         if (*r == '\n') {
@@ -162,7 +161,7 @@ int main()
     putWord("GIF");
     // Version
     putWord("89a");
-    
+
     //// 18. Logical Screen Descriptor
     // Logical Screen imageWidth
     hexEncode(imageWidth);
@@ -200,20 +199,39 @@ int main()
     putchar(3);
     hexEncode(1);
     hexEncode(0);
-    for (j = 0; j < 21 * 3; j++)
-    {
+    int frameAmount = 21 * 3;
+    for (int frame = 0; frame < frameAmount; frame++) {
         k = 257;
-        hexEncode(63777);
-        hexEncode(k << 2);
-        hexEncode(modulo(j, 32) ? 11 : 511);
-        hexEncode(z);
+        //// 23. Graphic Control Extension
+        // Extension Introducer (0x21)
+        putchar(33);
+        // Graphic Control Label (0xF9)
+        putchar(249);
+        // Block Size (4)
+        putchar(4);
+        // <Packed Fields> (Disposal : Do not dispose. The graphic is to be left)
+        putchar(4); // 00000100
+        // Delay time
+        hexEncode(modulo(frame, 32) ? 11 : 511); // default : 11 : 511
+        // Block terminator
+        hexEncode(0);
+
+        //// 20. Image Descriptor.
+        // Image Separator (0x2C)
         putchar(44);
-        hexEncode(i = f = z);
+        // Image Left Position (0)
         hexEncode(z);
+        // Image Top Position (0)
+        hexEncode(z);
+        // Image Width
         hexEncode(imageWidth);
+        // Image Height
         hexEncode(imageHeight);
-        hexEncode(1 << 11);
+        // Packed Fields
+        hexEncode(2048);
         r = G = I + imageWidth * imageHeight;
+        i = 0;
+        f = 0;
         for (t = T; i < 1 << 21; i++)
         {
             if (i < Y) {
@@ -229,12 +247,12 @@ int main()
             if (I[i]) {
                 c = I[i] * 31 - 31;
             } else {
-                if (31 < j) {
-                    c = j - 31;
+                if (31 < frame) {
+                    c = frame - 31;
                 } else {
-                    c = 31 - j;
+                    c = 31 - frame;
                 }
-            } 
+            }
 
             if (t[c] < z) {
                 E(Z);
@@ -259,6 +277,6 @@ int main()
             }
         }
     }
-    putchar(53 + 6);
+    putchar(59);
     return (z);
 }
