@@ -106,6 +106,24 @@ void generateCharactersPixels()
     }
 }
 
+// Own refacto
+void defineImageDimensions() {
+    int rowWidth;
+    for (rowWidth = 12, r = I; (*I = i = getchar()) > -1; I++) {
+        if (i == '\n') {
+            imageHeight += 20; // a character is 14px tall, +3px above, +3px bellow => 20px
+            if (imageWidth < rowWidth) {
+              imageWidth = rowWidth;
+            }
+            rowWidth = 12;
+        } else {
+            // Ensures it's a valid ASCII character, otherwise takes it off
+            I -= i < 32 || 127 <= i;
+            rowWidth += 12;
+        }
+    }
+}
+
 
 int main()
 {
@@ -123,20 +141,9 @@ int main()
             }
         }
     }
-    for (j = 12, r = I; (*I = i = getchar()) > -1; I++)
-    {
-        if(i-10) {
-            // Ensures it's a valid ASCII character
-            I -= i < 32 || 127 <= i;
-            j += 12;
-        } else {
-            imageHeight += 20; // a character is 14px tall, +3px above, +3px bellow => 20px
-            if (imageWidth < j) {
-                imageWidth = j;
-            }
-            j = 12;
-        }
-    }
+
+    defineImageDimensions();
+    
     while (*r != -1)
     {
         if (*r == '\n') {
