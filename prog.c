@@ -80,15 +80,22 @@ void hexEncode (int n)
     putchar(n / Y);
 }
 
-void J()
+void generateCharactersPixels()
 {
-    for (j = 0; j < 240; j++)
+    // Each character is displayed in a 12*16 grid = 192px. 4 "pixels" make a full pixel (UL -> UR -> BL -> BR)
+    // There are 24 empty pixels (12*2) at the top, and 4 empty pixels (2*2) at the bottom right 
+    for (j = 0; j < 192; j++)
     {
-        k = modulo(G[j / 2 / 2 + (*r - 32) * *"<nopqabdeg"], 3);
+        char characterSymbol = *r - 32;
+
+        // k = 1 if a pixel must be placed, otherwise 0
+        k = modulo(G[j / 4 + (characterSymbol * 60)], 3);
         // *r - 32 -> changing 32 to 31 : TELUGU becomes UFMVHV
-        I[6 + (h + 6 + j / 12 / 2 * 2 + modulo(j / 2, 2)) * imageWidth + modulo(j / 2 / 2, +06) * 2 + w * 12 + modulo(j, 2)] = k;
+        I[6 + (h + 6 + j / 24 * 2 + modulo(j / 2, 2)) * imageWidth + modulo(j / 4, 6) * 2 + w * 12 + modulo(j, 2)] = k;
+        
     }
 }
+
 
 int main()
 {
@@ -109,25 +116,27 @@ int main()
     for (j = 12, r = I; (*I = i = getchar()) > -1; I++)
     {
         if(i-10) {
+            // Ensures it's a valid ASCII character
             I -= i < 32 || 127 <= i;
             j += 12;
         } else {
-            imageHeight += 20; // a character is 14px tall, +3px above, +3px bellow = 20px
+            imageHeight += 20; // a character is 14px tall, +3px above, +3px bellow => 20px
             if (imageWidth < j) {
                 imageWidth = j;
             }
             j = 12;
         }
     }
-    for (; *r > -1; r++)
+    while (*r != -1)
     {
-        if (*r - 10) {
-            J();
-            w++;
-        } else {
+        if (*r == '\n') {
             w = z;
             h += 20;
+        } else {
+            generateCharactersPixels();
+            w++;
         }
+        r++;
     }
 
     ////// https://www.w3.org/Graphics/GIF/spec-gif89a.txt
