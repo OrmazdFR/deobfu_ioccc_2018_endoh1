@@ -41,6 +41,16 @@ void saveIntToFile(int myvar)
     fclose(file);
 }
 
+void saveCharToFile(char mychar) {
+    FILE *file = fopen("charFile.txt", "a+");
+    if (file == NULL) {
+        printf("Failed to open file.\n");
+    }
+
+    fprintf(file, "%c\n", mychar);
+
+    fclose(file);
+}
 
 int modulo(int nb1, int nb2)
 {
