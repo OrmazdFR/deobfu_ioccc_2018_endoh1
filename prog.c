@@ -60,6 +60,7 @@ int modulo(int nb1, int nb2)
 int w;
 int h;
 
+int frameAmount = 21 * 3;
 int f;
 int c;
 int imageWidth;
@@ -106,7 +107,7 @@ void generateCharactersPixels()
 }
 
 void function1() {
-    for (i = 0; i < 21 * 3; i++, I++) {
+    for (int frame = 0; frame < frameAmount; frame++, I++) {
         for (r = G, G += 2; *G++;) {
             if (*G >= 13 * 3) {
               if (*G - *r) {
@@ -201,7 +202,6 @@ int main()
     putchar(3);
     hexEncode(1);
     hexEncode(0);
-    int frameAmount = 21 * 3;
     for (int frame = 0; frame < frameAmount; frame++) {
         k = 257;
         //// 23. Graphic Control Extension
