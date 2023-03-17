@@ -105,6 +105,21 @@ void generateCharactersPixels()
     }
 }
 
+void function1() {
+    for (i = 0; i < 21 * 3; i++, I++) {
+        for (r = G, G += 2; *G++;) {
+            if (*G >= 13 * 3) {
+              if (*G - *r) {
+                *I++ = *G;
+              } else {
+                *I++ = r[1];
+                *I++ = r[2];
+              }
+            }
+        }
+    }
+}
+
 // Own refacto
 void defineImageDimensions() {
     int rowWidth;
@@ -126,20 +141,7 @@ void defineImageDimensions() {
 
 int main()
 {
-    for (i = 0; i < 21 * 3; i++, I++)
-    {
-        for (r = G, G += 2; *G++;)
-        {
-            if (*G >= 13 * 3) {
-                if (*G - *r) {
-                    *I++ = *G;
-                } else {
-                    *I++ = r[1];
-                    *I++ = r[2];
-                }
-            }
-        }
-    }
+    function1();
 
     defineImageDimensions();
 
