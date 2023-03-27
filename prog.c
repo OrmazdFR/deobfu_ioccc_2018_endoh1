@@ -124,8 +124,9 @@ void function1() {
 // Own refacto
 void defineImageDimensions() {
     r = I;
-    for (int rowWidth = 12; (*I = i = getchar()) > -1; I++) {
-        if (i == '\n') {
+    int testedCharacter;
+    for (int rowWidth = 12; (*I = testedCharacter = getchar()) > -1; I++) {
+        if (testedCharacter == '\n') {
             imageHeight += 20; // a character is 14px tall, +3px above, +3px bellow => 20px
             if (imageWidth < rowWidth) {
               imageWidth = rowWidth;
@@ -133,7 +134,7 @@ void defineImageDimensions() {
             rowWidth = 12;
         } else {
             // Ensures it's a valid ASCII character, otherwise takes it off
-            I -= i < 32 || 127 <= i;
+            I -= testedCharacter < 32 || 127 <= testedCharacter;
             rowWidth += 12;
         }
     }
