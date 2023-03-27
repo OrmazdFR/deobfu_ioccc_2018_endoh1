@@ -123,8 +123,8 @@ void function1() {
 
 // Own refacto
 void defineImageDimensions() {
-    int rowWidth;
-    for (rowWidth = 12, r = I; (*I = i = getchar()) > -1; I++) {
+    r = I;
+    for (int rowWidth = 12; (*I = i = getchar()) > -1; I++) {
         if (i == '\n') {
             imageHeight += 20; // a character is 14px tall, +3px above, +3px bellow => 20px
             if (imageWidth < rowWidth) {
