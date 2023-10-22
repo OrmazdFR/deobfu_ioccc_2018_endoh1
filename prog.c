@@ -6,7 +6,7 @@ char F[2097152] = "~T/}3(|+G{>/zUhy;Jx+5wG<v>>u55t.?sIZrC]n.;m+:l+Hk]WjNJi/Sh+2f
 -2E2/2L2/EE->E:?EE,2XMMMM1Hy`)5rHK;+.T+?[n2/_2{LKN2/_|cK2+.2`;}:?{KL57?|cK:2{NrHKtMMMK2nrH;rH[n"
 "CkM_E21-E,-1->E(_:mSE/LhLE/mm:2Ul;2M>,2KW-+.-u).5Lm?fM`2`2nZXjj?[n<YcK?2}yC}H[^7N7LX^7N7UN</:-\
 ZWXI<^I2K?>T+?KH~-?f<;G_x2;;2XT7LXIuuVF2X(G(GVV-:-:KjJ]HKLyN7UjJ3.WXjNI2KN<l|cKt2~[IsHfI2w{[<VV"
-"GIfZG>x#&#&&$#$;ZXIc###$&$$#>7[LMv{&&&&#&##L,laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+"GIfZG>x#&#&&$#$;ZXIc###$&$$#>7[LMv{&&&&#&##L,aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
@@ -17,7 +17,7 @@ char *I = 957 + F;
 int *t;
 int k;
 int i;
-int j;
+int pixel;
 // T has a size of 3Mio
 int T[3145728];
 
@@ -36,20 +36,29 @@ void saveIntToFile(int myvar)
 		printf("Failed to open file.\n");
 	}
 
-	fprintf(file, "%d\n", myvar);
+	fprintf(file, "%d", myvar);
 
 	fclose(file);
 }
 
 void saveCharToFile(char mychar) {
-	FILE *file = fopen("charFile.txt", "a+");
+	FILE *file = fopen("testFile.txt", "a+");
 	if (file == NULL) {
 		printf("Failed to open file.\n");
 	}
 
-	fprintf(file, "%c\n", mychar);
+	fprintf(file, "%c", mychar);
 
 	fclose(file);
+}
+
+void savePixelToFile(int pixel, int k) {
+	if ((pixel + 1)%4 == 0) {
+		saveCharToFile(k ? 'M' : ' ');
+		if ((pixel +1)%24 == 0) {
+			saveCharToFile('\n');
+		}
+	}
 }
 
 int modulo(int nb1, int nb2)
@@ -95,14 +104,24 @@ void generateCharacterPixels()
 {
 	// Each character is displayed in a 12*16 grid = 192px. 4 "pixels" make a full pixel (UL -> UR -> BL -> BR)
 	// There are 24 empty pixels (12*2) at the top, and 4 empty pixels (2*2) at the bottom right
-	for (j = 0; j < 192; j++)
+	for (pixel = 0; pixel < 192; pixel++)
 	{
 		char characterSymbol = *r - 32;
 
 		// k = 1 if a pixel must be placed, otherwise 0
-		k = modulo(G[j / 4 + (characterSymbol * 60)], 3);
+		k = modulo(G[pixel / 4 + (characterSymbol * 60)], 3);
 		// *r - 32 -> changing 32 to 31 : TELUGU becomes UFMVHV
-		I[6 + (h + 6 + j / 24 * 2 + modulo(j / 2, 2)) * imageWidth + modulo(j / 4, 6) * 2 + w * 12 + modulo(j, 2)] = k;
+		I[
+			6 + 
+				(h + 6 + 
+				 	pixel / 24 * 2
+				+ modulo(pixel / 2, 2)
+				) * imageWidth
+			+ modulo(pixel / 4, 6) * 2
+			+ w * 12
+			+ modulo(pixel, 2)
+		] = k;
+		savePixelToFile(pixel, k);
 	}
 }
 
@@ -184,6 +203,7 @@ void defineImageDimensions() {
 			I -= testedCharacter < 32 || 127 <= testedCharacter;
 			rowWidth += 12;
 		}
+
 	}
 }
 
@@ -227,9 +247,11 @@ int main()
 		putchar(4);
 		// <Packed Fields> (Disposal : Do not dispose. The graphic is to be left)
 		putchar(4); // 00000100
-					// Delay time
+		// Delay time
 		hexEncode(modulo(frame, 32) ? 11 : 511); // default : 11 : 511
-												 // Block terminator
+		//^ Replacing 32 by `frameAmount/2` makes the background 100 dark)
+
+		 // Block terminator
 		hexEncode(0);
 
 		//// 20. Image Descriptor.
@@ -248,6 +270,7 @@ int main()
 		r = G = I + imageWidth * imageHeight;
 		i = 0;
 		f = 0;
+		// 1 << 21 = 2097152 = size of F[]
 		for (t = T; i < 1 << 21; i++)
 		{
 			if (i < Y) {
