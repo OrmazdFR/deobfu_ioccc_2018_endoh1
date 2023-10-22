@@ -91,7 +91,7 @@ void hexEncode (int n)
     putchar(n / Y);
 }
 
-void generateCharactersPixels()
+void generateCharacterPixels()
 {
     // Each character is displayed in a 12*16 grid = 192px. 4 "pixels" make a full pixel (UL -> UR -> BL -> BR)
     // There are 24 empty pixels (12*2) at the top, and 4 empty pixels (2*2) at the bottom right
@@ -153,7 +153,7 @@ int main()
             w = z;
             h += 20;
         } else {
-            generateCharactersPixels();
+            generateCharacterPixels();
             w++;
         }
         r++;
