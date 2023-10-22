@@ -122,6 +122,53 @@ void function1() {
 }
 
 // Own refacto
+void setHeader() {
+	// Signature
+	putWord("GIF");
+	// Version
+	putWord("89a");
+}
+
+void defineColors() {
+	for (i = 0; i < 32 * 3; i++)
+	{
+		putchar(i / 3 * X / 31); // Puts 0,0,0 8,8,8...255,255,255 which are RGB values. The first one (0,0,0) is also the color of the text
+	}
+}
+
+void setLogicalScreenDescriptor() {
+	// Logical Screen imageWidth
+	hexEncode(imageWidth);
+	// Logical Screen imageHeight
+	hexEncode(imageHeight);
+	// Packed fields
+	/*  - 1   : A Global Color Table will immediately follow, the Background Color Index field is meaningful.
+		- 111 : All colours will be used
+		- 0   : Sort Flag - Global Color Table is not sorted
+		- 100 : Size of Global Color Table */
+	putchar(244); //11110100
+				  // Background Color Index
+	putchar(0);
+	// Pixel Aspect Ratio
+	putchar(0);
+
+	// Global Color Table (there will be 32 colours)
+	defineColors();
+}
+
+void setApplicationExtension() {
+	// Extension Introducer (0x21)
+	putchar(33);
+	// Extension Label (0xFF)
+	putchar(X);
+	// Block size (0x0B)
+	putchar(11);
+	// Application Identifier
+	putWord("NETSCAPE");
+	// Appl. Authentication Code
+	putWord("2.0");
+}
+
 void defineImageDimensions() {
 	r = I;
 	int testedCharacter;
@@ -140,7 +187,7 @@ void defineImageDimensions() {
 	}
 }
 
-void putCharacter() {
+void putLineOfChars() {
 	while (*r != -1)
 	{
 		if (*r == '\n') {
@@ -159,59 +206,12 @@ int main()
 	function1();
 
 	defineImageDimensions();
-
-	while (*r != -1)
-	{
-		if (*r == '\n') {
-			w = z;
-			h += 20;
-		} else {
-			generateCharacterPixels();
-			w++;
-		}
-		r++;
-	}
+	putLineOfChars();
 
 	////// https://www.w3.org/Graphics/GIF/spec-gif89a.txt
-	//// 17. Header
-	// Signature
-	putWord("GIF");
-	// Version
-	putWord("89a");
-
-	//// 18. Logical Screen Descriptor
-	// Logical Screen imageWidth
-	hexEncode(imageWidth);
-	// Logical Screen imageHeight
-	hexEncode(imageHeight);
-	// Packed fields
-	/*  - 1   : A Global Color Table will immediately follow, the Background Color Index field is meaningful.
-		- 111 : All colours will be used
-		- 0   : Sort Flag - Global Color Table is not sorted
-		- 100 : Size of Global Color Table */
-	putchar(244); //11110100
-				  // Background Color Index
-	putchar(0);
-	// Pixel Aspect Ratio
-	putchar(0);
-
-	// Global Color Table (there will be 32 colours)
-	for (i = 0; i < 32 * 3; i++)
-	{
-		putchar(i / 3 * X / 31); // Puts 0,0,0 8,8,8...255,255,255 which are RGB values. The first one (0,0,0) is also the color of the text
-	}
-
-	//// 26. Application Extension
-	// Extension Introducer (0x21)
-	putchar(33);
-	// Extension Label (0xFF)
-	putchar(X);
-	// Block size (0x0B)
-	putchar(11);
-	// Application Identifier
-	putWord("NETSCAPE");
-	// Appl. Authentication Code
-	putWord("2.0");
+	setHeader();
+	setLogicalScreenDescriptor();
+	setApplicationExtension();
 
 	putchar(3);
 	hexEncode(1);
