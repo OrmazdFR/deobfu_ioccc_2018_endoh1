@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include "tests.c"
+#include "custom.c"
+
 // F has a size of 2Mio
 char F[2097152] = "~T/}3(|+G{>/zUhy;Jx+5wG<v>>u55t.?sIZrC]n.;m+:l+Hk]WjNJi/Sh+2f1>c2H`)(_2(^L\
  -]=([1/Z<2Y7/X12W:.VFFU1,T77S+;N?;M/>L..K1+JCCI<<H:(G*5F--E11C=5?.(>+(=3)Z-;*(:*.Y/5(-=)2*-U,\
@@ -20,46 +23,6 @@ int i;
 int pixel;
 // T has a size of 3Mio
 int T[3145728];
-
-// Custom function
-void putWord(char* word) {
-	while(*word) {
-		putchar(*word++);
-	}
-}
-
-// Test function
-void saveIntToFile(int myvar)
-{
-	FILE *file = fopen("testFile.txt", "a+");
-	if (file == NULL) {
-		printf("Failed to open file.\n");
-	}
-
-	fprintf(file, "%d", myvar);
-
-	fclose(file);
-}
-
-void saveCharToFile(char mychar) {
-	FILE *file = fopen("testFile.txt", "a+");
-	if (file == NULL) {
-		printf("Failed to open file.\n");
-	}
-
-	fprintf(file, "%c", mychar);
-
-	fclose(file);
-}
-
-void savePixelToFile(int pixel, int k) {
-	if ((pixel + 1)%4 == 0) {
-		saveCharToFile(k ? 'M' : ' ');
-		if ((pixel +1)%24 == 0) {
-			saveCharToFile('\n');
-		}
-	}
-}
 
 int modulo(int nb1, int nb2)
 {
@@ -121,7 +84,7 @@ void generateCharacterPixels()
 			+ w * 12
 			+ modulo(pixel, 2)
 		] = k;
-		savePixelToFile(pixel, k);
+		//savePixelToFile(pixel, k);
 	}
 }
 
@@ -281,7 +244,7 @@ int main()
 		}
 
 		E(Y);
-		for (i = -1; ++i < imageWidth * imageHeight; t = T + Z * Y + Y)
+		for (i = 0; i < imageWidth * imageHeight; i++, t = T + Z * Y + Y)
 		{
 			if (I[i]) {
 				c = I[i] * 31 - 31;
