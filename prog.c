@@ -231,10 +231,10 @@ int main()
 		// Packed Fields
 		hexEncode(2048);
 		r = G = I + imageWidth * imageHeight;
-		i = 0;
-		f = 0;
+		
+		t = T;
 		// 1 << 21 = 2097152 = size of F[]
-		for (t = T; i < 1 << 21; i++)
+		for (i = 0; i < (1 << 21); i++)
 		{
 			if (i < Y) {
 				T[i] = i;
@@ -242,7 +242,7 @@ int main()
 				T[i] = -1;
 			}
 		}
-
+		f = 0;
 		E(Y);
 		for (i = 0; i < imageWidth * imageHeight; i++, t = T + Z * Y + Y)
 		{
