@@ -34,7 +34,7 @@ int h;
 
 int frameAmount = 21 * 3;
 int f;
-int c;
+int color;
 int imageWidth;
 int imageHeight = 11;
 int X = 255;
@@ -63,17 +63,19 @@ void hexEncode (int n)
 	putchar(n / Y);
 }
 
-void generateCharacterPixels()
+void defineIfBlackPixel()
 {
 	// Each character is displayed in a 12*16 grid = 192px. 4 "pixels" make a full pixel (UL -> UR -> BL -> BR)
 	// There are 24 empty pixels (12*2) at the top, and 4 empty pixels (2*2) at the bottom right
 	for (pixel = 0; pixel < 192; pixel++)
 	{
+		// *readCharacter - 32 -> changing 32 to 31 : TELUGU becomes UFMVHV
 		char characterSymbol = *readCharacter - 32;
 
 		// k = 1 if a pixel must be placed, otherwise 0
 		k = modulo(G[pixel / 4 + (characterSymbol * 60)], 3);
-		// *readCharacter - 32 -> changing 32 to 31 : TELUGU becomes UFMVHV
+
+		//I[6 +...] 6 is the space from the left of the image
 		I[
 			6 + 
 				(h + 6 + 
@@ -85,6 +87,7 @@ void generateCharacterPixels()
 			+ modulo(pixel, 2)
 		] = k;
 		//savePixelToFile(pixel, k);
+		//saveIntToFile(G[pixel / 4 + (characterSymbol * 60)]);
 	}
 }
 
@@ -212,7 +215,7 @@ void putLineOfChars() {
 			w = z;
 			h += 20;
 		} else {
-			generateCharacterPixels();
+			defineIfBlackPixel();
 			w++;
 		}
 		readCharacter++;
@@ -222,9 +225,9 @@ void putLineOfChars() {
 int main()
 {
 	function1();
-
 	defineImageDimensions();
 	putLineOfChars();
+
 
 	////// https://www.w3.org/Graphics/GIF/spec-gif89a.txt
 	setHeader();
@@ -256,25 +259,25 @@ int main()
 		for (i = 0; i < imageWidth * imageHeight; i++, t = T + Z * Y + Y)
 		{
 			if (I[i]) {
-				c = I[i] * 31 - 31;
+				color = I[i] * 31 - 31;
 			} else {
 				if (31 < frame) {
-					c = frame - 31;
+					color = frame - 31;
 				} else {
-					c = 31 - frame;
+					color = 31 - frame;
 				}
 			}
 
-			if (t[c] < z) {
+			if (t[color] < z) {
 				E(Z);
 				if (k < (1 << 12) - 2) {
-					t[c] = ++k;
-					Z = c[T];
+					t[color] = ++k;
+					Z = color[T];
 				} else {
-					Z = c[T];
+					Z = color[T];
 				}
 			} else {
-				Z = c[t];
+				Z = color[t];
 			}
 		}
 		E(Z);
