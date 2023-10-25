@@ -151,6 +151,41 @@ void setApplicationExtension() {
 	putWord("2.0");
 }
 
+void setGraphicControlExtension(int frame) {
+	//// 23. Graphic Control Extension
+	// Extension Introducer (0x21)
+	putchar(33);
+	// Graphic Control Label (0xF9)
+	putchar(249);
+
+	// Block Size (4)
+	putchar(4);
+	// <Packed Fields> (Disposal : Do not dispose. The graphic is to be left)
+	putchar(4); // 00000100
+	// Delay time
+	hexEncode(modulo(frame, 32) ? 11 : 511); // default : 11 : 511
+	 //^ Replacing 32 by `frameAmount/2` makes the background 100 dark)
+
+	 // Block terminator
+	hexEncode(0);
+}
+
+void setImageDescriptor() {
+	//// 20. Image Descriptor.
+	// Image Separator (0x2C)
+	putchar(44);
+	// Image Left Position (0)
+	hexEncode(z);
+	// Image Top Position (0)
+	hexEncode(z);
+	// Image Width
+	hexEncode(imageWidth);
+	// Image Height
+	hexEncode(imageHeight);
+	// Packed Fields
+	hexEncode(2048);
+}
+
 void defineImageDimensions() {
 	r = I;
 	int testedCharacter;
@@ -201,35 +236,9 @@ int main()
 	hexEncode(0);
 	for (int frame = 0; frame < frameAmount; frame++) {
 		k = 257;
-		//// 23. Graphic Control Extension
-		// Extension Introducer (0x21)
-		putchar(33);
-		// Graphic Control Label (0xF9)
-		putchar(249);
-		// Block Size (4)
-		putchar(4);
-		// <Packed Fields> (Disposal : Do not dispose. The graphic is to be left)
-		putchar(4); // 00000100
-		// Delay time
-		hexEncode(modulo(frame, 32) ? 11 : 511); // default : 11 : 511
-		//^ Replacing 32 by `frameAmount/2` makes the background 100 dark)
+		setGraphicControlExtension(frame);
+		setImageDescriptor();
 
-		 // Block terminator
-		hexEncode(0);
-
-		//// 20. Image Descriptor.
-		// Image Separator (0x2C)
-		putchar(44);
-		// Image Left Position (0)
-		hexEncode(z);
-		// Image Top Position (0)
-		hexEncode(z);
-		// Image Width
-		hexEncode(imageWidth);
-		// Image Height
-		hexEncode(imageHeight);
-		// Packed Fields
-		hexEncode(2048);
 		r = G = I + imageWidth * imageHeight;
 		
 		t = T;
