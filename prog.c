@@ -14,7 +14,7 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
 "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-char *r;
+char *readCharacter;
 char *G = F;
 char *I = 957 + F;
 int *t;
@@ -69,11 +69,11 @@ void generateCharacterPixels()
 	// There are 24 empty pixels (12*2) at the top, and 4 empty pixels (2*2) at the bottom right
 	for (pixel = 0; pixel < 192; pixel++)
 	{
-		char characterSymbol = *r - 32;
+		char characterSymbol = *readCharacter - 32;
 
 		// k = 1 if a pixel must be placed, otherwise 0
 		k = modulo(G[pixel / 4 + (characterSymbol * 60)], 3);
-		// *r - 32 -> changing 32 to 31 : TELUGU becomes UFMVHV
+		// *readCharacter - 32 -> changing 32 to 31 : TELUGU becomes UFMVHV
 		I[
 			6 + 
 				(h + 6 + 
@@ -90,13 +90,13 @@ void generateCharacterPixels()
 
 void function1() {
 	for (int frame = 0; frame < frameAmount; frame++, I++) {
-		for (r = G, G += 2; *G++;) {
+		for (readCharacter = G, G += 2; *G++;) {
 			if (*G >= 13 * 3) {
-				if (*G - *r) {
+				if (*G - *readCharacter) {
 					*I++ = *G;
 				} else {
-					*I++ = r[1];
-					*I++ = r[2];
+					*I++ = readCharacter[1];
+					*I++ = readCharacter[2];
 				}
 			}
 		}
@@ -187,7 +187,7 @@ void setImageDescriptor() {
 }
 
 void defineImageDimensions() {
-	r = I;
+	readCharacter = I;
 	int testedCharacter;
 	for (int rowWidth = 12; (*I = testedCharacter = getchar()) > -1; I++) {
 		if (testedCharacter == '\n') {
@@ -206,16 +206,16 @@ void defineImageDimensions() {
 }
 
 void putLineOfChars() {
-	while (*r != -1)
+	while (*readCharacter != -1)
 	{
-		if (*r == '\n') {
+		if (*readCharacter == '\n') {
 			w = z;
 			h += 20;
 		} else {
 			generateCharacterPixels();
 			w++;
 		}
-		r++;
+		readCharacter++;
 	}
 }
 
@@ -239,7 +239,7 @@ int main()
 		setGraphicControlExtension(frame);
 		setImageDescriptor();
 
-		r = G = I + imageWidth * imageHeight;
+		readCharacter = G = I + imageWidth * imageHeight;
 		
 		t = T;
 		// 1 << 21 = 2097152 = size of F[]
@@ -279,11 +279,11 @@ int main()
 		}
 		E(Z);
 		E(257);
-		for (G++; k = G - r > X ? X : G - r, putchar(k);)
+		for (G++; k = G - readCharacter > X ? X : G - readCharacter, putchar(k);)
 		{
 			while (k > 0)
 			{
-				putchar(*r++);
+				putchar(*readCharacter++);
 				k--;
 			}
 		}
